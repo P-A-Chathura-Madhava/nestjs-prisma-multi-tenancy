@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma-public/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PUBLIC_DATABASE_URL")
+}
+
+model Tenant {
+  id           Int         @id @default(autoincrement())
+  code         String
+  name         String
+  metadata     Json?
+  datasource   Datasource? @relation(fields: [datasourceId], references: [id])
+  datasourceId Int?
+}
+
+model Datasource {
+  id        Int      @id @default(autoincrement())
+  name      String
+  metadata  Json?
+  tenants   Tenant[]
+}
